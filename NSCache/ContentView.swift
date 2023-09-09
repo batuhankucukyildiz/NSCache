@@ -7,15 +7,58 @@
 
 import SwiftUI
 
+
+
+
+
+
+class CacheViewModel : ObservableObject {
+    @Published var startingImage : UIImage? = nil
+    let imageName : String = "person"
+    
+    init() {
+        getImageFromAssetsFolder()
+    }
+    func getImageFromAssetsFolder(){
+        startingImage = UIImage(named: imageName)
+    }
+}
+
+
 struct ContentView: View {
+    @StateObject var vm = CacheViewModel()
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationView{
+            VStack{
+                if let image = vm.startingImage{
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 200 , height: 200)
+                        .clipped()
+                        .cornerRadius(10)
+                }
+                HStack{
+                    Button(action: {}, label: {
+                        Text("Save to Cache")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color.blue)
+                            .cornerRadius(10)
+                    })
+                    Button(action: {}, label: {
+                        Text("Delete from Cache")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color.red)
+                            .cornerRadius(10)
+                    })
+                }
+                
+            }
         }
-        .padding()
     }
 }
 
